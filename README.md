@@ -118,3 +118,4 @@ Welcome! This repository is a fully automated daily data analysis showcase. Ever
 | 2026-10-05 | S&P 500 ETF (SPY) | $774.83 | +0.67% | 1 | [View Report](./insights/reports/2026-10-05-report.md) |
 | 2026-10-06 | S&P 500 ETF (SPY) | $779.09 | +0.55% | 1 | [View Report](./insights/reports/2026-10-06-report.md) |
 | 2026-10-07 | S&P 500 ETF (SPY) | $777.22 | -0.24% | 1 | [View Report](./insights/reports/2026-10-07-report.md) |
+| 2026-10-08 | S&P 500 ETF (SPY) | $773.93 | -0.42% | 1 | [View Report](./insights/reports/2026-10-08-report.md) |
