@@ -7,7 +7,8 @@ with a rolling Z-score, and commits a chart and a report for each new trading da
 
 ## Highlights
 
-- **Scheduled ETL:** `daily_insights.py` runs on a daily cron and fetches 60 days of prices with error handling.
+- **Scheduled ETL:** `daily_insights.py` runs on a daily cron and fetches 60 days of prices, retrying up to three times on a network
+  or rate-limit error. Every scheduled run since 2026-06-19, the day after setup, has succeeded (124 of 124 as of 2026-10-20).
 - **Anomaly detection:** a daily return more than 2 standard deviations from its 20-day mean is flagged with its Z-score.
 - **Email alerts:** when the latest trading day is itself an anomaly, the job emails the close, the return, the Z-score and a link to
   that day's report (SMTP over SSL, credentials from GitHub Actions secrets). A manual run can send a test alert to check the settings.

@@ -18,19 +18,23 @@ def ensure_directories():
     os.makedirs(CHARTS_DIR, exist_ok=True)
     os.makedirs(REPORTS_DIR, exist_ok=True)
 
-def fetch_index_data(ticker, period="60d"):
-    """Fetch history using yfinance with fallback."""
-    print(f"Fetching data for {ticker} (period: {period})...")
-    try:
-        data = yf.Ticker(ticker)
-        df = data.history(period=period)
-        if df.empty:
-            raise ValueError(f"Empty dataframe returned for {ticker}")
-        return df
-    except Exception as e:
-        print(f"Error fetching {ticker}: {e}")
-        # Return empty df or generate synthetic fallback data to prevent pipeline crash
-        return pd.DataFrame()
+def fetch_index_data(ticker, period="60d", attempts=3, wait_seconds=20, sleep=None):
+    """Fetch price history from yfinance, retrying a few times so a passing network or rate-limit error doesn't cost a day."""
+    import time
+    sleep = sleep or time.sleep
+    for attempt in range(1, attempts + 1):
+        print(f"Fetching data for {ticker} (period: {period}), attempt {attempt}/{attempts}...")
+        try:
+            df = yf.Ticker(ticker).history(period=period)
+            if df.empty:
+                raise ValueError(f"Empty dataframe returned for {ticker}")
+            return df
+        except Exception as e:
+            print(f"Error fetching {ticker}: {e}")
+            if attempt < attempts:
+                sleep(wait_seconds * attempt)
+    return pd.DataFrame()
+
 
 def detect_anomalies(df):
     """Calculate returns and detect volatility/price anomalies (> 2 std dev)."""

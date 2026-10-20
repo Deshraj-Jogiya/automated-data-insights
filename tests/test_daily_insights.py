@@ -74,3 +74,21 @@ def test_alert_email_names_the_move_and_links_the_report(monkeypatch):
     assert msg["To"] == "me@example.com"
     body = msg.get_content()
     assert "2.7 standard deviations" in body and "insights/reports/2026-10-19-report.md" in body
+
+
+def test_fetch_retries_a_transient_failure(monkeypatch):
+    calls = {"n": 0}
+
+    class FlakyTicker:
+        def __init__(self, ticker):
+            pass
+
+        def history(self, period):
+            calls["n"] += 1
+            if calls["n"] < 3:
+                raise ConnectionError("temporary")
+            return _prices([100.0, 101.0])
+
+    monkeypatch.setattr(di.yf, "Ticker", FlakyTicker)
+    df = di.fetch_index_data("SPY", sleep=lambda s: None)
+    assert calls["n"] == 3 and len(df) == 2
