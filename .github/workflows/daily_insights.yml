@@ -6,6 +6,11 @@ on:
     - cron: '0 18 * * *'
   workflow_dispatch:
     # Allow manual execution from Actions tab
+    inputs:
+      send_test_alert:
+        description: "Send a test alert email even if today is not an anomaly"
+        type: boolean
+        default: false
 
 jobs:
   analyze:
@@ -29,6 +34,11 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run daily insights analysis
+      env:
+        ALERT_SMTP_USER: ${{ secrets.ALERT_SMTP_USER }}
+        ALERT_SMTP_PASSWORD: ${{ secrets.ALERT_SMTP_PASSWORD }}
+        ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+        ALERT_TEST: ${{ inputs.send_test_alert && '1' || '0' }}
       run: python daily_insights.py
 
     - name: Commit and push reports and charts

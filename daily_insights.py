@@ -1,6 +1,8 @@
 # Daily Market Insights & Anomaly Detection Automation Pipeline
 import os
 import re
+import smtplib
+from email.message import EmailMessage
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -198,6 +200,44 @@ def clean_prices(df):
     return df[df["Close"].notna() & np.isfinite(df["Close"])]
 
 
+REPO_URL = "https://github.com/Deshraj-Jogiya/automated-data-insights"
+
+
+def send_anomaly_alert(anomaly, ticker_name, date_str, smtp_factory=smtplib.SMTP_SSL, test=False):
+    """Email an alert when the latest trading day is itself an anomaly.
+
+    Reads ALERT_SMTP_USER, ALERT_SMTP_PASSWORD and ALERT_EMAIL_TO from the environment (GitHub Actions secrets). Returns True when an
+    email was sent and False when the settings are missing, so a fork without them still runs the rest of the pipeline.
+    """
+    user, password, to = (os.environ.get(k) for k in ("ALERT_SMTP_USER", "ALERT_SMTP_PASSWORD", "ALERT_EMAIL_TO"))
+    if not (user and password and to):
+        print("Email alert skipped: ALERT_SMTP_USER, ALERT_SMTP_PASSWORD and ALERT_EMAIL_TO are not all set.")
+        return False
+    direction = "up" if anomaly["return"] > 0 else "down"
+    msg = EmailMessage()
+    msg["Subject"] = ("[Test] " if test else "") + f"Market anomaly: {ticker_name} {direction} {abs(anomaly['return'])}% on {date_str}"
+    msg["From"] = user
+    msg["To"] = to
+    msg.set_content(
+        f"{ticker_name} closed at ${anomaly['close']:,.2f} on {date_str}, a daily return of {anomaly['return']:+}%.\n"
+        f"That is {anomaly['z_score']} standard deviations from its 20-day average return (alert threshold: 2).\n\n"
+        f"Report: {REPO_URL}/blob/main/insights/reports/{date_str}-report.md\n"
+    )
+    with smtp_factory(os.environ.get("ALERT_SMTP_HOST", "smtp.gmail.com"), int(os.environ.get("ALERT_SMTP_PORT", "465"))) as smtp:
+        smtp.login(user, password)
+        smtp.send_message(msg)
+    print(f"Email alert sent to {to}.")
+    return True
+
+
+def latest_day_sample(df, last_close, daily_change):
+    """The latest day's close, return and Z-score in the same shape as an anomaly record."""
+    z = 0.0
+    if "Return_Std_20" in df and df["Return_Std_20"].iloc[-1] > 0:
+        z = abs(df["Daily_Return"].iloc[-1] - df["Return_MA_20"].iloc[-1]) / df["Return_Std_20"].iloc[-1]
+    return {"close": round(last_close, 2), "return": round(daily_change, 2), "z_score": round(float(z), 2)}
+
+
 def run():
     print("Starting daily market insights pipeline...")
     ensure_directories()
@@ -225,16 +265,22 @@ def run():
     # Name everything after the last trading day in the data, not the calendar day the job ran: a weekend or holiday run
     # brings no new close and is skipped instead of repeating Friday's numbers under a new date.
     today_str = df.index[-1].strftime("%Y-%m-%d")
+    latest_is_anomaly = bool(anomalies) and anomalies[-1]["date"] == today_str
+    if os.environ.get("ALERT_TEST") == "1" and not latest_is_anomaly:
+        # Manual check of the email settings: send the latest day's numbers, marked as a test
+        send_anomaly_alert(latest_day_sample(df, last_close, daily_change), ticker_display, today_str, test=True)
     if today_str in recorded_dates():
         print(f"No new trading day since {today_str}; nothing to report.")
         return
-    
+
     # Generate charts
     chart_filename = generate_visualization(df, ticker_display, today_str)
-    
+
     # Write markdown reports
     if chart_filename:
         write_markdown_report(anomalies, last_close, daily_change, ticker_display, chart_filename, today_str)
+        if latest_is_anomaly:
+            send_anomaly_alert(anomalies[-1], ticker_display, today_str)
         print("Daily automation job ran successfully!")
     else:
         print("Error: Could not render chart.")

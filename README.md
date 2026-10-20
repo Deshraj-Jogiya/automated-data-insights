@@ -9,6 +9,8 @@ with a rolling Z-score, and commits a chart and a report for each new trading da
 
 - **Scheduled ETL:** `daily_insights.py` runs on a daily cron and fetches 60 days of prices with error handling.
 - **Anomaly detection:** a daily return more than 2 standard deviations from its 20-day mean is flagged with its Z-score.
+- **Email alerts:** when the latest trading day is itself an anomaly, the job emails the close, the return, the Z-score and a link to
+  that day's report (SMTP over SSL, credentials from GitHub Actions secrets). A manual run can send a test alert to check the settings.
 - **Trading days only:** reports are named after the last trading day in the data; a weekend or holiday run has no new close and is
   skipped instead of repeating Friday's numbers.
 - **Clean inputs:** rows without a valid close price are dropped before analysis, so a gap in the feed can't reach a report.
@@ -25,6 +27,7 @@ flowchart LR
     N -- no --> STOP[skip]
     N -- yes --> Z[rolling Z-score anomalies]
     Z --> O[chart + report in insights/]
+    Z -- latest day is an anomaly --> M[email alert]
     O --> H[insights/history.md]
 ```
 
@@ -39,3 +42,14 @@ pip install -r requirements.txt
 python daily_insights.py
 python -m pytest tests/ -v
 ```
+
+Email alerts need three repository secrets (for Gmail, an app password, not the account password):
+
+| Secret | Value |
+|---|---|
+| `ALERT_SMTP_USER` | sending address |
+| `ALERT_SMTP_PASSWORD` | its app password |
+| `ALERT_EMAIL_TO` | where alerts go |
+
+Without them the pipeline runs as before and logs that the alert was skipped. To check the settings, run the workflow by hand from the
+Actions tab with **Send a test alert email** ticked.
