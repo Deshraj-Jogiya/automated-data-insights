@@ -1,132 +1,41 @@
-# 📈 Automated Daily Data Insights
+# Automated Daily Data Insights
 
-Welcome! This repository is a fully automated daily data analysis showcase. Every single day, a GitHub Actions cron job wakes up, fetches market data, runs statistical anomaly detection, exports high-quality visualizations, and drafts a daily report.
+[![ci](https://github.com/Deshraj-Jogiya/automated-data-insights/actions/workflows/ci.yml/badge.svg)](https://github.com/Deshraj-Jogiya/automated-data-insights/actions/workflows/ci.yml) [![daily_insights](https://github.com/Deshraj-Jogiya/automated-data-insights/actions/workflows/daily_insights.yml/badge.svg)](https://github.com/Deshraj-Jogiya/automated-data-insights/actions/workflows/daily_insights.yml) ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-## 🗂️ Execution History Index
-| Date | Asset Class | Closing Price | Daily Return | Anomalies | Report Link |
-|---|---|---|---|---|---|
-| 2026-06-15 | S&P 500 ETF (SPY) | $754.83 | +1.76% | 2 | [View Report](./insights/reports/2026-06-15-report.md) |
-| 2026-06-18 | S&P 500 ETF (SPY) | $746.74 | +0.78% | 2 | [View Report](./insights/reports/2026-06-18-report.md) |
-| 2026-06-19 | S&P 500 ETF (SPY) | $746.74 | +1.04% | 2 | [View Report](./insights/reports/2026-06-19-report.md) |
-| 2026-06-20 | S&P 500 ETF (SPY) | $746.74 | +1.04% | 2 | [View Report](./insights/reports/2026-06-20-report.md) |
-| 2026-06-21 | S&P 500 ETF (SPY) | $746.74 | +1.04% | 2 | [View Report](./insights/reports/2026-06-21-report.md) |
-| 2026-06-22 | S&P 500 ETF (SPY) | $744.39 | -0.31% | 2 | [View Report](./insights/reports/2026-06-22-report.md) |
-| 2026-06-23 | S&P 500 ETF (SPY) | $734.19 | -1.37% | 2 | [View Report](./insights/reports/2026-06-23-report.md) |
-| 2026-06-24 | S&P 500 ETF (SPY) | $732.02 | -0.21% | 2 | [View Report](./insights/reports/2026-06-24-report.md) |
-| 2026-06-25 | S&P 500 ETF (SPY) | $731.65 | -0.22% | 2 | [View Report](./insights/reports/2026-06-25-report.md) |
-| 2026-06-26 | S&P 500 ETF (SPY) | $732.38 | -0.26% | 2 | [View Report](./insights/reports/2026-06-26-report.md) |
-| 2026-06-27 | S&P 500 ETF (SPY) | $nan | +nan% | 2 | [View Report](./insights/reports/2026-06-27-report.md) |
-| 2026-06-28 | S&P 500 ETF (SPY) | $728.99 | -0.72% | 2 | [View Report](./insights/reports/2026-06-28-report.md) |
-| 2026-06-29 | S&P 500 ETF (SPY) | $740.78 | +1.62% | 2 | [View Report](./insights/reports/2026-06-29-report.md) |
-| 2026-06-30 | S&P 500 ETF (SPY) | $747.38 | +0.86% | 2 | [View Report](./insights/reports/2026-06-30-report.md) |
-| 2026-07-01 | S&P 500 ETF (SPY) | $747.07 | +0.04% | 2 | [View Report](./insights/reports/2026-07-01-report.md) |
-| 2026-07-02 | S&P 500 ETF (SPY) | $741.93 | -0.51% | 2 | [View Report](./insights/reports/2026-07-02-report.md) |
-| 2026-07-03 | S&P 500 ETF (SPY) | $744.78 | -0.13% | 2 | [View Report](./insights/reports/2026-07-03-report.md) |
-| 2026-07-04 | S&P 500 ETF (SPY) | $744.78 | -0.13% | 2 | [View Report](./insights/reports/2026-07-04-report.md) |
-| 2026-07-05 | S&P 500 ETF (SPY) | $744.78 | -0.13% | 2 | [View Report](./insights/reports/2026-07-05-report.md) |
-| 2026-07-06 | S&P 500 ETF (SPY) | $751.90 | +0.96% | 2 | [View Report](./insights/reports/2026-07-06-report.md) |
-| 2026-07-07 | S&P 500 ETF (SPY) | $746.51 | -0.63% | 2 | [View Report](./insights/reports/2026-07-07-report.md) |
-| 2026-07-08 | S&P 500 ETF (SPY) | $745.04 | -0.36% | 2 | [View Report](./insights/reports/2026-07-08-report.md) |
-| 2026-07-09 | S&P 500 ETF (SPY) | $751.41 | +0.81% | 2 | [View Report](./insights/reports/2026-07-09-report.md) |
-| 2026-07-10 | S&P 500 ETF (SPY) | $755.10 | +0.45% | 2 | [View Report](./insights/reports/2026-07-10-report.md) |
-| 2026-07-11 | S&P 500 ETF (SPY) | $754.95 | +0.43% | 2 | [View Report](./insights/reports/2026-07-11-report.md) |
-| 2026-07-12 | S&P 500 ETF (SPY) | $754.95 | +0.43% | 2 | [View Report](./insights/reports/2026-07-12-report.md) |
-| 2026-07-13 | S&P 500 ETF (SPY) | $749.24 | -0.76% | 2 | [View Report](./insights/reports/2026-07-13-report.md) |
-| 2026-07-14 | S&P 500 ETF (SPY) | $752.14 | +0.40% | 2 | [View Report](./insights/reports/2026-07-14-report.md) |
-| 2026-07-15 | S&P 500 ETF (SPY) | $753.28 | +0.19% | 1 | [View Report](./insights/reports/2026-07-15-report.md) |
-| 2026-07-16 | S&P 500 ETF (SPY) | $750.22 | -0.61% | 1 | [View Report](./insights/reports/2026-07-16-report.md) |
-| 2026-07-17 | S&P 500 ETF (SPY) | $743.96 | -0.90% | 1 | [View Report](./insights/reports/2026-07-17-report.md) |
-| 2026-07-18 | S&P 500 ETF (SPY) | $743.29 | -0.99% | 1 | [View Report](./insights/reports/2026-07-18-report.md) |
-| 2026-07-19 | S&P 500 ETF (SPY) | $743.29 | -0.99% | 1 | [View Report](./insights/reports/2026-07-19-report.md) |
-| 2026-07-20 | S&P 500 ETF (SPY) | $742.30 | -0.13% | 1 | [View Report](./insights/reports/2026-07-20-report.md) |
-| 2026-07-21 | S&P 500 ETF (SPY) | $748.22 | +0.83% | 1 | [View Report](./insights/reports/2026-07-21-report.md) |
-| 2026-07-22 | S&P 500 ETF (SPY) | $748.45 | +0.02% | 1 | [View Report](./insights/reports/2026-07-22-report.md) |
-| 2026-07-23 | S&P 500 ETF (SPY) | $736.75 | -1.43% | 1 | [View Report](./insights/reports/2026-07-23-report.md) |
-| 2026-07-24 | S&P 500 ETF (SPY) | $737.61 | -0.08% | 1 | [View Report](./insights/reports/2026-07-24-report.md) |
-| 2026-07-25 | S&P 500 ETF (SPY) | $738.93 | +0.10% | 1 | [View Report](./insights/reports/2026-07-25-report.md) |
-| 2026-07-26 | S&P 500 ETF (SPY) | $738.93 | +0.10% | 1 | [View Report](./insights/reports/2026-07-26-report.md) |
-| 2026-07-27 | S&P 500 ETF (SPY) | $739.22 | +0.14% | 1 | [View Report](./insights/reports/2026-07-27-report.md) |
-| 2026-07-28 | S&P 500 ETF (SPY) | $741.86 | +0.38% | 1 | [View Report](./insights/reports/2026-07-28-report.md) |
-| 2026-07-29 | S&P 500 ETF (SPY) | $742.07 | +0.16% | 1 | [View Report](./insights/reports/2026-07-29-report.md) |
-| 2026-07-30 | S&P 500 ETF (SPY) | $741.66 | +1.67% | 3 | [View Report](./insights/reports/2026-07-30-report.md) |
-| 2026-07-31 | S&P 500 ETF (SPY) | $745.82 | +0.56% | 3 | [View Report](./insights/reports/2026-07-31-report.md) |
-| 2026-08-01 | S&P 500 ETF (SPY) | $747.03 | +0.72% | 3 | [View Report](./insights/reports/2026-08-01-report.md) |
-| 2026-08-02 | S&P 500 ETF (SPY) | $747.03 | +0.72% | 3 | [View Report](./insights/reports/2026-08-02-report.md) |
-| 2026-08-03 | S&P 500 ETF (SPY) | $758.39 | +1.52% | 3 | [View Report](./insights/reports/2026-08-03-report.md) |
-| 2026-08-04 | S&P 500 ETF (SPY) | $772.99 | +2.02% | 2 | [View Report](./insights/reports/2026-08-04-report.md) |
-| 2026-08-05 | S&P 500 ETF (SPY) | $771.74 | +0.05% | 2 | [View Report](./insights/reports/2026-08-05-report.md) |
-| 2026-08-06 | S&P 500 ETF (SPY) | $768.56 | -0.16% | 2 | [View Report](./insights/reports/2026-08-06-report.md) |
-| 2026-08-07 | S&P 500 ETF (SPY) | $771.29 | +0.36% | 2 | [View Report](./insights/reports/2026-08-07-report.md) |
-| 2026-08-08 | S&P 500 ETF (SPY) | $773.26 | +0.61% | 2 | [View Report](./insights/reports/2026-08-08-report.md) |
-| 2026-08-09 | S&P 500 ETF (SPY) | $773.26 | +0.61% | 2 | [View Report](./insights/reports/2026-08-09-report.md) |
-| 2026-08-10 | S&P 500 ETF (SPY) | $772.76 | -0.06% | 2 | [View Report](./insights/reports/2026-08-10-report.md) |
-| 2026-08-11 | S&P 500 ETF (SPY) | $769.88 | -0.41% | 2 | [View Report](./insights/reports/2026-08-11-report.md) |
-| 2026-08-12 | S&P 500 ETF (SPY) | $773.43 | +0.37% | 2 | [View Report](./insights/reports/2026-08-12-report.md) |
-| 2026-08-13 | S&P 500 ETF (SPY) | $777.76 | +0.68% | 2 | [View Report](./insights/reports/2026-08-13-report.md) |
-| 2026-08-14 | S&P 500 ETF (SPY) | $776.00 | -0.24% | 2 | [View Report](./insights/reports/2026-08-14-report.md) |
-| 2026-08-15 | S&P 500 ETF (SPY) | $776.34 | -0.20% | 2 | [View Report](./insights/reports/2026-08-15-report.md) |
-| 2026-08-16 | S&P 500 ETF (SPY) | $776.34 | -0.20% | 2 | [View Report](./insights/reports/2026-08-16-report.md) |
-| 2026-08-17 | S&P 500 ETF (SPY) | $773.59 | -0.35% | 2 | [View Report](./insights/reports/2026-08-17-report.md) |
-| 2026-08-18 | S&P 500 ETF (SPY) | $768.30 | -0.57% | 2 | [View Report](./insights/reports/2026-08-18-report.md) |
-| 2026-08-19 | S&P 500 ETF (SPY) | $769.27 | +0.24% | 2 | [View Report](./insights/reports/2026-08-19-report.md) |
-| 2026-08-20 | S&P 500 ETF (SPY) | $763.85 | -0.68% | 2 | [View Report](./insights/reports/2026-08-20-report.md) |
-| 2026-08-21 | S&P 500 ETF (SPY) | $765.46 | +0.38% | 2 | [View Report](./insights/reports/2026-08-21-report.md) |
-| 2026-08-22 | S&P 500 ETF (SPY) | $765.72 | +0.41% | 2 | [View Report](./insights/reports/2026-08-22-report.md) |
-| 2026-08-23 | S&P 500 ETF (SPY) | $765.72 | +0.41% | 2 | [View Report](./insights/reports/2026-08-23-report.md) |
-| 2026-08-24 | S&P 500 ETF (SPY) | $764.49 | -0.16% | 2 | [View Report](./insights/reports/2026-08-24-report.md) |
-| 2026-08-25 | S&P 500 ETF (SPY) | $764.90 | +0.19% | 2 | [View Report](./insights/reports/2026-08-25-report.md) |
-| 2026-08-26 | S&P 500 ETF (SPY) | $766.93 | +0.13% | 2 | [View Report](./insights/reports/2026-08-26-report.md) |
-| 2026-08-28 | S&P 500 ETF (SPY) | $771.10 | +0.66% | 2 | [View Report](./insights/reports/2026-08-28-report.md) |
-| 2026-08-29 | S&P 500 ETF (SPY) | $769.35 | -0.23% | 2 | [View Report](./insights/reports/2026-08-29-report.md) |
-| 2026-08-29 | S&P 500 ETF (SPY) | $769.35 | -0.23% | 2 | [View Report](./insights/reports/2026-08-29-report.md) |
-| 2026-08-30 | S&P 500 ETF (SPY) | $769.35 | -0.23% | 2 | [View Report](./insights/reports/2026-08-30-report.md) |
-| 2026-08-31 | S&P 500 ETF (SPY) | $767.05 | -0.30% | 2 | [View Report](./insights/reports/2026-08-31-report.md) |
-| 2026-09-01 | S&P 500 ETF (SPY) | $761.72 | -0.69% | 2 | [View Report](./insights/reports/2026-09-01-report.md) |
-| 2026-09-02 | S&P 500 ETF (SPY) | $765.16 | +0.44% | 2 | [View Report](./insights/reports/2026-09-02-report.md) |
-| 2026-09-03 | S&P 500 ETF (SPY) | $773.15 | +1.04% | 2 | [View Report](./insights/reports/2026-09-03-report.md) |
-| 2026-09-04 | S&P 500 ETF (SPY) | $770.24 | -0.38% | 2 | [View Report](./insights/reports/2026-09-04-report.md) |
-| 2026-09-05 | S&P 500 ETF (SPY) | $770.19 | -0.39% | 2 | [View Report](./insights/reports/2026-09-05-report.md) |
-| 2026-09-06 | S&P 500 ETF (SPY) | $770.19 | -0.39% | 2 | [View Report](./insights/reports/2026-09-06-report.md) |
-| 2026-09-07 | S&P 500 ETF (SPY) | $770.19 | -0.39% | 2 | [View Report](./insights/reports/2026-09-07-report.md) |
-| 2026-09-08 | S&P 500 ETF (SPY) | $765.96 | -0.55% | 2 | [View Report](./insights/reports/2026-09-08-report.md) |
-| 2026-09-09 | S&P 500 ETF (SPY) | $762.45 | -0.46% | 2 | [View Report](./insights/reports/2026-09-09-report.md) |
-| 2026-09-10 | S&P 500 ETF (SPY) | $757.89 | -0.59% | 2 | [View Report](./insights/reports/2026-09-10-report.md) |
-| 2026-09-11 | S&P 500 ETF (SPY) | $764.20 | +0.84% | 2 | [View Report](./insights/reports/2026-09-11-report.md) |
-| 2026-09-12 | S&P 500 ETF (SPY) | $764.29 | +0.85% | 2 | [View Report](./insights/reports/2026-09-12-report.md) |
-| 2026-09-13 | S&P 500 ETF (SPY) | $764.29 | +0.85% | 2 | [View Report](./insights/reports/2026-09-13-report.md) |
-| 2026-09-14 | S&P 500 ETF (SPY) | $760.88 | -0.45% | 2 | [View Report](./insights/reports/2026-09-14-report.md) |
-| 2026-09-15 | S&P 500 ETF (SPY) | $757.39 | -0.46% | 2 | [View Report](./insights/reports/2026-09-15-report.md) |
-| 2026-09-16 | S&P 500 ETF (SPY) | $754.05 | -0.44% | 2 | [View Report](./insights/reports/2026-09-16-report.md) |
-| 2026-09-17 | S&P 500 ETF (SPY) | $762.60 | +1.13% | 2 | [View Report](./insights/reports/2026-09-17-report.md) |
-| 2026-09-18 | S&P 500 ETF (SPY) | $761.54 | -0.14% | 2 | [View Report](./insights/reports/2026-09-18-report.md) |
-| 2026-09-19 | S&P 500 ETF (SPY) | $761.69 | +0.13% | 2 | [View Report](./insights/reports/2026-09-19-report.md) |
-| 2026-09-20 | S&P 500 ETF (SPY) | $761.69 | +0.13% | 2 | [View Report](./insights/reports/2026-09-20-report.md) |
-| 2026-09-21 | S&P 500 ETF (SPY) | $773.50 | +1.55% | 3 | [View Report](./insights/reports/2026-09-21-report.md) |
-| 2026-09-22 | S&P 500 ETF (SPY) | $773.38 | -0.02% | 3 | [View Report](./insights/reports/2026-09-22-report.md) |
-| 2026-09-23 | S&P 500 ETF (SPY) | $767.81 | -0.72% | 3 | [View Report](./insights/reports/2026-09-23-report.md) |
-| 2026-09-24 | S&P 500 ETF (SPY) | $767.18 | -0.08% | 2 | [View Report](./insights/reports/2026-09-24-report.md) |
-| 2026-09-25 | S&P 500 ETF (SPY) | $771.35 | +0.54% | 1 | [View Report](./insights/reports/2026-09-25-report.md) |
-| 2026-09-26 | S&P 500 ETF (SPY) | $771.35 | +0.54% | 1 | [View Report](./insights/reports/2026-09-26-report.md) |
-| 2026-09-27 | S&P 500 ETF (SPY) | $771.35 | +0.54% | 1 | [View Report](./insights/reports/2026-09-27-report.md) |
-| 2026-09-28 | S&P 500 ETF (SPY) | $765.61 | -0.74% | 1 | [View Report](./insights/reports/2026-09-28-report.md) |
-| 2026-09-29 | S&P 500 ETF (SPY) | $764.20 | -0.18% | 1 | [View Report](./insights/reports/2026-09-29-report.md) |
-| 2026-09-30 | S&P 500 ETF (SPY) | $762.63 | -0.21% | 1 | [View Report](./insights/reports/2026-09-30-report.md) |
-| 2026-10-01 | S&P 500 ETF (SPY) | $763.99 | +0.18% | 1 | [View Report](./insights/reports/2026-10-01-report.md) |
-| 2026-10-02 | S&P 500 ETF (SPY) | $769.64 | +0.74% | 1 | [View Report](./insights/reports/2026-10-02-report.md) |
-| 2026-10-03 | S&P 500 ETF (SPY) | $769.64 | +0.74% | 1 | [View Report](./insights/reports/2026-10-03-report.md) |
-| 2026-10-04 | S&P 500 ETF (SPY) | $769.64 | +0.74% | 1 | [View Report](./insights/reports/2026-10-04-report.md) |
-| 2026-10-05 | S&P 500 ETF (SPY) | $774.83 | +0.67% | 1 | [View Report](./insights/reports/2026-10-05-report.md) |
-| 2026-10-06 | S&P 500 ETF (SPY) | $779.09 | +0.55% | 1 | [View Report](./insights/reports/2026-10-06-report.md) |
-| 2026-10-07 | S&P 500 ETF (SPY) | $777.22 | -0.24% | 1 | [View Report](./insights/reports/2026-10-07-report.md) |
-| 2026-10-08 | S&P 500 ETF (SPY) | $773.93 | -0.42% | 1 | [View Report](./insights/reports/2026-10-08-report.md) |
-| 2026-10-09 | S&P 500 ETF (SPY) | $778.57 | +0.60% | 1 | [View Report](./insights/reports/2026-10-09-report.md) |
-| 2026-10-10 | S&P 500 ETF (SPY) | $778.57 | +0.60% | 1 | [View Report](./insights/reports/2026-10-10-report.md) |
-| 2026-10-11 | S&P 500 ETF (SPY) | $778.57 | +0.60% | 1 | [View Report](./insights/reports/2026-10-11-report.md) |
-| 2026-10-12 | S&P 500 ETF (SPY) | $778.10 | -0.06% | 1 | [View Report](./insights/reports/2026-10-12-report.md) |
-| 2026-10-13 | S&P 500 ETF (SPY) | $778.01 | -0.01% | 1 | [View Report](./insights/reports/2026-10-13-report.md) |
-| 2026-10-14 | S&P 500 ETF (SPY) | $769.60 | -1.08% | 1 | [View Report](./insights/reports/2026-10-14-report.md) |
-| 2026-10-15 | S&P 500 ETF (SPY) | $771.79 | +0.28% | 1 | [View Report](./insights/reports/2026-10-15-report.md) |
-| 2026-10-16 | S&P 500 ETF (SPY) | $763.23 | -1.11% | 1 | [View Report](./insights/reports/2026-10-16-report.md) |
-| 2026-10-17 | S&P 500 ETF (SPY) | $763.25 | -1.11% | 1 | [View Report](./insights/reports/2026-10-17-report.md) |
-| 2026-10-18 | S&P 500 ETF (SPY) | $763.25 | -1.11% | 1 | [View Report](./insights/reports/2026-10-18-report.md) |
-| 2026-10-19 | S&P 500 ETF (SPY) | $766.48 | +0.42% | 1 | [View Report](./insights/reports/2026-10-19-report.md) |
+A daily market-data pipeline that runs entirely on GitHub Actions: it pulls S&P 500 ETF (SPY) prices from yFinance, flags unusual days
+with a rolling Z-score, and commits a chart and a report for each new trading day, at no server cost.
+
+## Highlights
+
+- **Scheduled ETL:** `daily_insights.py` runs on a daily cron and fetches 60 days of prices with error handling.
+- **Anomaly detection:** a daily return more than 2 standard deviations from its 20-day mean is flagged with its Z-score.
+- **Trading days only:** reports are named after the last trading day in the data; a weekend or holiday run has no new close and is
+  skipped instead of repeating Friday's numbers.
+- **Clean inputs:** rows without a valid close price are dropped before analysis, so a gap in the feed can't reach a report.
+- **Run history:** one row per trading day in [`insights/history.md`](insights/history.md), linking each day's report and chart.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    CRON[[GitHub Actions cron]] --> E[daily_insights.py]
+    E -- yFinance --> D[(60 days of prices)]
+    D --> C[drop missing prices]
+    C --> N{new trading day?}
+    N -- no --> STOP[skip]
+    N -- yes --> Z[rolling Z-score anomalies]
+    Z --> O[chart + report in insights/]
+    O --> H[insights/history.md]
+```
+
+## Stack
+
+Python, yFinance, pandas, NumPy, Matplotlib, pytest, GitHub Actions.
+
+## Run it
+
+```bash
+pip install -r requirements.txt
+python daily_insights.py
+python -m pytest tests/ -v
+```
