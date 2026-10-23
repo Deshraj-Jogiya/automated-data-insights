@@ -17,6 +17,8 @@ with a rolling Z-score, and commits a chart and a report for each new trading da
 - **Clean inputs:** rows without a valid close price are dropped before analysis, so a gap in the feed can't reach a report.
 - **Run history:** one row per trading day in [`insights/history.md`](insights/history.md), linking each day's report and chart.
 
+Measured results, each with the question, the test and the decision: [docs/FINDINGS.md](docs/FINDINGS.md).
+
 ## Architecture
 
 ```mermaid
