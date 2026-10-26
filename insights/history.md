@@ -110,3 +110,4 @@ Rows before 2026-10-20 are labelled with the day the job ran, which can be the d
 | 2026-10-21 | S&P 500 ETF (SPY) | $773.09 | +0.53% | 1 | [report](./reports/2026-10-21-report.md) |
 | 2026-10-22 | S&P 500 ETF (SPY) | $763.96 | -1.18% | 1 | [report](./reports/2026-10-22-report.md) |
 | 2026-10-23 | S&P 500 ETF (SPY) | $759.97 | -0.52% | 1 | [report](./reports/2026-10-23-report.md) |
+| 2026-10-26 | S&P 500 ETF (SPY) | $765.37 | +0.71% | 1 | [report](./reports/2026-10-26-report.md) |
