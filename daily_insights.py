@@ -198,10 +198,15 @@ def append_history(ticker_name, date_str, last_close, daily_change, anomaly_coun
 
 
 def clean_prices(df):
-    """Drop rows without a close price, so a gap in the feed can never reach the report as $nan."""
+    """Drop rows without a close price, so a gap in the feed can never reach the report as $nan, and rows that are not a trading
+    session: the feed can return a stray bar for a weekend or holiday that repeats the last price, which once produced a Saturday
+    report whose change was measured against Thursday's close (2026-10-17, -1.11% twice)."""
     if df.empty:
         return df
-    return df[df["Close"].notna() & np.isfinite(df["Close"])]
+    keep = df["Close"].notna() & np.isfinite(df["Close"]) & (df.index.dayofweek < 5)
+    if "Volume" in df:
+        keep &= df["Volume"].fillna(0) > 0
+    return df[keep]
 
 
 REPO_URL = "https://github.com/Deshraj-Jogiya/automated-data-insights"

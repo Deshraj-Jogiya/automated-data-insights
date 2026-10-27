@@ -92,3 +92,12 @@ def test_fetch_retries_a_transient_failure(monkeypatch):
     monkeypatch.setattr(di.yf, "Ticker", FlakyTicker)
     df = di.fetch_index_data("SPY", sleep=lambda s: None)
     assert calls["n"] == 3 and len(df) == 2
+
+
+def test_a_weekend_or_zero_volume_bar_is_not_a_trading_day():
+    idx = pd.to_datetime(["2026-10-15", "2026-10-16", "2026-10-17", "2026-10-19"])  # Thu, Fri, Sat, Mon
+    df = pd.DataFrame({"Close": [771.8, 763.23, 763.25, 766.48], "Volume": [10, 12, 0, 9]}, index=idx)
+    kept = di.clean_prices(df)
+    assert [d.strftime("%Y-%m-%d") for d in kept.index] == ["2026-10-15", "2026-10-16", "2026-10-19"]
+    holiday = pd.DataFrame({"Close": [100.0, 100.0]}, index=pd.to_datetime(["2026-11-25", "2026-11-26"])).assign(Volume=[5, 0])
+    assert len(di.clean_prices(holiday)) == 1  # Thanksgiving bar with no volume is dropped
